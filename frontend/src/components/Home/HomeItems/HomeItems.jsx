@@ -12,12 +12,12 @@ export default function HomeItems(props) {
           <li>
             Файл експортиран от <span>САП</span>, формат -{" "}
             <span>баркод, сапкод, име на артикул, доставчик, група</span>. Име
-            на файла <span>sap.csv</span>
+            на файла <span>sap.xls или sap.xlsx</span>
           </li>
           <li>
             Файл експортиран от <span>Орпак</span>, формат -{" "}
             <span>сапкод, баркод, наличност</span>. Име на файла{" "}
-            <span>orpak.csv</span>
+            <span>orpak.xls или orpak.xlsx</span>
           </li>
           <li>
             Файл с <span>броената наличност</span>, формат -{" "}
