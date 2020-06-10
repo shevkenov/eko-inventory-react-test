@@ -1,0 +1,43 @@
+.Home {
+  width: 60%;
+  height: 100vh;
+  margin: auto;
+  background: rgb(177, 230, 248);
+  padding: 1em;
+}
+
+.Div{
+  border-bottom: double black;
+  padding-bottom: 10px;
+}
+
+.Home h2 {
+  color: rgb(143, 55, 5);
+}
+
+.Home ul {
+  margin: 1em;
+  font-size: 1.2em;
+}
+
+.Home input {
+  font-size: 1rem;
+  padding: 5px 10px;
+  background: none;
+  border: 1px solid;
+  color: black;
+  border-radius: 5px;
+  border-color: rgb(33, 65, 114);
+}
+
+.Error {
+  text-align: center;
+  margin: 2em;
+  color: red;
+}
+
+.Home span{
+  color: rgb(143, 55, 5);
+  font-weight: 600;
+  font-style: italic;
+}

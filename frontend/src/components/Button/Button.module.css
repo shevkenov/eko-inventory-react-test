@@ -1,0 +1,15 @@
+.Button {
+  background-color: rgb(219, 229, 245);
+  text-align: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  width: 70px;
+  font-weight: 600;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.Button:hover{
+    background-color: #8f5c2c;
+    color: white;
+}

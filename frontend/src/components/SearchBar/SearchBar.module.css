@@ -1,0 +1,21 @@
+.Form input{
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 1.2rem;
+}
+
+.Form select{
+    font-size: 1.2rem;
+}
+
+.Form button{
+    border-radius: 5px;
+    margin-left: 5px;
+    font-size: 1.2rem;
+}
+
+.Form{
+    margin: 10px 30px;
+    border: 1px solid black;
+    padding: 7px;
+}

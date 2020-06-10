@@ -1,0 +1,55 @@
+.Inventory {
+  width: 100;
+}
+
+table {
+  text-align: left;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  padding: 0 0.5rem;
+  border: 1px solid #ddd;
+}
+
+th {
+  padding: 0.5rem;
+  background-color: rgb(219, 229, 245);
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+th:hover {
+  cursor: grab;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+td input {
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.Number {
+  width: 70px;
+}
+.No {
+  width: 30px;
+}
+
+.Input {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 70px;
+}
+
+tr:hover {
+  background-color: #ddd;
+}

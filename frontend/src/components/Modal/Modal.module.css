@@ -1,0 +1,35 @@
+.Modal {
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+    width: 20%;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px black;
+    padding: 16px;
+    left: 70%;
+    top: 30%;
+    box-sizing: border-box;
+    transition: all 0.3s ease-out;
+}
+
+.Popup h3{
+    font-size: 1.5rem;
+} 
+
+.Modal span{
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.ModalButtons{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.ModalButtons button{
+    margin:5px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid red;
+    padding: 5px 10px;
+}
