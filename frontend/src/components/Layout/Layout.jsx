@@ -189,7 +189,7 @@ class Layout extends Component {
       const fsData = await fsBlob.text();
       const orpakData = await convertXLSXtoCSV(orpakFile);
       const sapData = await convertXLSXtoCSV(sapFile);
-      console.log(fsData);
+      
       //const file = new FileReader();
       //file.readAsText(sapFile, "windows-1251");
 
@@ -410,7 +410,7 @@ class Layout extends Component {
       const data = await convertXLSXtoCSV(file);
       const articles = data.split("\n").slice(1).reduce((acc,cur) => {
         const item = cur.split(";");
-        if(item.length === 8){
+        if(item.length === 7){
           acc.push({
             sapcode: item[0].trim(),
             barcode: [item[1].trim()],
