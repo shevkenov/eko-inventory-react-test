@@ -313,7 +313,7 @@ class Layout extends Component {
           decimalQty = qty.toString().substring(inx + 1);
           decimalQty = ("000" + decimalQty).slice(-3);
         }
-        const brc = item.barcode[0];
+        const brc = item.barcode;
         const barcode =
           brc === "-" ? "0000000000000" : ("000000000000" + brc).slice(-13);
         acc.push(`${barcode}${intQty}${decimalQty}`);
@@ -342,7 +342,7 @@ class Layout extends Component {
       const difference = item.inStock - item.orpakStock;
       return {
         sapcode: item.sapcode,
-        barcode: item.barcode[0],
+        barcode: item.barcode,
         name: item.name,
         group: item.group,
         supplier: item.supplier,

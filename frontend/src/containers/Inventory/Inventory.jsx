@@ -35,7 +35,7 @@ class Inventory extends Component {
   render() {
     let index = 0;
     const articles = this.props.articles().map((item) => {
-      const barcode = item.barcode ? item.barcode : [item.sapcode];
+      //const barcode = item.barcode ? item.barcode : [item.sapcode];
       let difference = item.inStock - item.orpakStock;
       difference =
         (difference + "").indexOf(".") === -1
@@ -45,7 +45,7 @@ class Inventory extends Component {
         <tr key={index}>
           <td className={classes.No}>{++index}</td>
           <td>{item.sapcode}</td>
-          <td>{barcode[0]}</td>
+          <td>{item.barcode}</td>
           <td>{item.name}</td>
           <td>{item.group}</td>
           <td>{item.supplier}</td>
