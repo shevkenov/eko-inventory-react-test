@@ -13,17 +13,20 @@ const importCountedArticles = (filedata, articleState) => {
         (sCode) => sCode === curCode
       );
 
+      if (curCode === '112005422'){
+        console.log(articles[curCode]);
+      }
       //if sapcode exists, the relevant barcode will be checked for existnce
       if (sapcode) {
-        const barcode = Object.keys(articles[sapcode].barcode).find(bCode => bCode === curCode);
-
+        let barcode = Object.keys(articles[sapcode].barcode).find(bCode => bCode === curCode);
+        const existingBarcodes = Object.keys(articles[sapcode].barcode);
+        barcode = !barcode && existingBarcodes.length === 1 ? existingBarcodes : barcode
         if (barcode) {
           
           //if barcode exists to the relevant sapcode, the inStock will be calculated
           articles[sapcode].barcode[barcode].inStock += count;
 
         } else {
-
           //if does not exists to the relevant sapcode, all sapcode properties will be copied and a barcode property will be created
           articles[sapcode] = {
             ...articles[sapcode],
@@ -35,6 +38,7 @@ const importCountedArticles = (filedata, articleState) => {
               },
             },
           };
+
 
         }
       } else {
