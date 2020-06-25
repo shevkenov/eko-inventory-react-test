@@ -13,9 +13,6 @@ const importCountedArticles = (filedata, articleState) => {
         (sCode) => sCode === curCode
       );
 
-      if (curCode === '112005422'){
-        console.log(articles[curCode]);
-      }
       //if sapcode exists, the relevant barcode will be checked for existnce
       if (sapcode) {
         let barcode = Object.keys(articles[sapcode].barcode).find(bCode => bCode === curCode);
