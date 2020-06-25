@@ -9,58 +9,25 @@ const importCountedArticles = (filedata, articleState) => {
     const name = data[2];
 
     if (barcodeRegex.test(curCode)) {
-      const sapcode = Object.keys(articles).find(
-        (sCode) => sCode === curCode
+      const sapcode = Object.keys(articles).find((sCode) =>
+        articles[sCode].allBarcodes.includes(curCode)
       );
 
       //if sapcode exists, the relevant barcode will be checked for existnce
-      if (sapcode) {
-        let barcode = Object.keys(articles[sapcode].barcode).find(bCode => bCode === curCode);
-        const existingBarcodes = Object.keys(articles[sapcode].barcode);
-        barcode = !barcode && existingBarcodes.length === 1 ? existingBarcodes : barcode
-        if (barcode) {
-          
-          //if barcode exists to the relevant sapcode, the inStock will be calculated
-          articles[sapcode].barcode[barcode].inStock += count;
-
-        } else {
-          //if does not exists to the relevant sapcode, all sapcode properties will be copied and a barcode property will be created
-          articles[sapcode] = {
-            ...articles[sapcode],
-            barcode: {
-              ...articles[sapcode].barcode,
-              [curCode]: {
-                orpakStock: 0,
-                inStock: count,
-              },
-            },
-          };
-
-
-        }
+      if (articles[curCode]) {
+        articles[curCode].inStock += count;
+      } else if (sapcode) {
+        articles[sapcode].inStock += count;
       } else {
-        const sapcode = Object.keys(articles).find(sCode => articles[sCode].barcode && articles[sCode].barcode[curCode])
-
-        if (sapcode) {
-          
-          articles[sapcode].barcode[curCode].inStock += count;
-        }else{
-
-          //if sapcode does not exists it will be initiated as sapcode and barcode
-          articles[curCode] = {
-            sapcode: curCode,
-            barcode: {
-              [curCode]: {
-                orpakStock: 0,
-                inStock: count,
-              },
-            },
-            name,
-            supplier: "-",
-            group: "-",
-          };
-        }
-
+        articles[curCode] = {
+          barcode: [curCode],
+          masterBarcode: curCode,
+          orpakStock: 0,
+          inStock: count,
+          name,
+          supplier: "-",
+          group: "-",
+        };
       }
     }
   });
@@ -86,24 +53,21 @@ const importOrpakArticles = (fileData, articleState) => {
     if (sapcodeRegex.test(curSapcode) && barcodeRegex.test(curBarcode)) {
       //check whether current barcode already exists in articles.
       if (articles[curSapcode]) {
-        //if barcode exists, orpakStock will be calculated, otherwise the barcode will be added as property with initial instock and orpakStock
-        if (!articles[curSapcode].barcode[curBarcode]) {
-          articles[curSapcode].barcode[curBarcode] = {
-            inStock: 0,
-            orpakStock: 0,
-          };
+        //if barcode does not exist, it will be added as property with 0 instock and 0 orpakStock.
+        if (!articles[curSapcode].allBarcodes.includes(curBarcode)) {
+          articles[curSapcode].allBarcodes.push(curBarcode);
         }
 
-        articles[curSapcode].barcode[curBarcode].orpakStock += orpakStock;
+        //it will be calculated
+        articles[curSapcode].orpakStock += orpakStock;
+        articles[curSapcode].masterBarcode = curBarcode;
       } else if (!articles[curSapcode]) {
+        //if such sapcode does not exist it will be added as a new property.
         articles[curSapcode] = {
-          sapcode: curSapcode,
-          barcode: {
-            [curBarcode]: {
-              inStock: 0,
-              orpakStock,
-            },
-          },
+          allBarcodes: [curBarcode],
+          masterBarcode: curBarcode,
+          inStock: 0,
+          orpakStock,
           name: "-",
           group: "-",
           supplier: "-",
@@ -112,7 +76,7 @@ const importOrpakArticles = (fileData, articleState) => {
     }
   });
 
-  return articles;
+  return articleState;
 };
 
 const importSapArticles = (fileData, articleState) => {
@@ -130,22 +94,19 @@ const importSapArticles = (fileData, articleState) => {
 
     if (sapcodeRegex.test(sapcode) && barcodeRegex.test(barcode)) {
       //if sapcode do not exists, creates new object, else check if
-      if (!articles[sapcode]) {
+      if (articles[sapcode]) {
+        if (!articles[sapcode].allBarcodes.includes(barcode)) {
+          articles[sapcode].allBarcodes.push(barcode);
+        }
+      } else {
         articles[sapcode] = {
           name,
-          barcode: {
-            [barcode]: {
-              orpakStock: 0,
-              inStock: 0,
-            },
-          },
+          allBarcodes: [barcode],
+          inStock: 0,
+          orpakStock: 0,
+          masterBarcode: null,
           supplier,
           group,
-        };
-      } else if (!articles[sapcode].barcode[barcode]) {
-        articles[sapcode].barcode[barcode] = {
-          orpakStock: 0,
-          inStock: 0,
         };
       }
     }
@@ -159,25 +120,20 @@ const importFiles = (sapData, orpakData, fsData) => {
   const orpak = importOrpakArticles(orpakData, sap);
   const result = importCountedArticles(fsData, orpak);
 
-  //console.log(result);
   return Object.keys(result).reduce((acc, sap) => {
-    const barcodes = { ...result[sap].barcode };
+    const item = {
+      sapcode: sap,
+      barcode: result[sap].masterBarcode,
+      orpakStock: result[sap].orpakStock,
+      inStock: result[sap].inStock,
+      supplier: result[sap].supplier,
+      group: result[sap].group,
+      name: result[sap].name,
+    };
 
-    Object.keys(barcodes).forEach((bcode) => {
-      const item = {
-        sapcode: sap,
-        name: result[sap].name,
-        barcode: bcode,
-        orpakStock: result[sap].barcode[bcode].orpakStock,
-        inStock: result[sap].barcode[bcode].inStock,
-        supplier: result[sap].supplier,
-        group: result[sap].group,
-      };
-
-      if (item.inStock || item.orpakStock) {
-        acc.push(item);
-      }
-    });
+    if (item.inStock || item.orpakStock) {
+      acc.push(item);
+    }
 
     return acc;
   }, []);
