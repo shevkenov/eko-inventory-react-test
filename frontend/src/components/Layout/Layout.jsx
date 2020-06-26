@@ -282,29 +282,28 @@ class Layout extends Component {
   };
 
   exportCSV = () => {
-    const CSVheading =
-      "Sapcode;Barcode;Name;Group;Supplier;OrpakStock;In Stock;Differnce\n";
+    const CSVheading = "Sapcode;Barcode;Name;Group;Supplier;OrpakStock;In Stock;Differnce\n";
     const articles = this.state.articles.map((item) => {
       const difference = item.inStock - item.orpakStock;
-      return `${item.sapcode};${"`" + item.barcode};${item.name};${
+      
+      return `${item.sapcode};${"`" + item.barcode};${item.name.replace('"', '')};${
         item.group
       };${item.supplier};${item.orpakStock};${item.inStock};${difference}`;
     });
 
-    let csvContent =
-      "data:text/csv;charset=utf-8," + CSVheading + articles.join("\n");
+    const blob = new Blob([CSVheading + articles.join("\n")]);
 
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    let url = window.URL.createObjectURL(blob);
+    let link = document.createElement("a");
+    link.setAttribute("href", url);
     link.setAttribute("download", "Inventory.txt");
     document.body.appendChild(link); // Required for FF
 
-    link.click(); // This will download the data file named "my_data.csv".
+    link.click();
   };
 
   exportOrpak = () => {
-    const articles = this.state.articles.reduce((acc, item) => {
+    const articles = this.state.articles.map((item) => {
       const qty = item.inStock;
       const intQty = ("0000000000" + parseInt(qty)).slice(-10);
 
@@ -317,16 +316,14 @@ class Layout extends Component {
       const brc = item.barcode;
       const barcode =
         brc === "-" ? "0000000000000" : ("000000000000" + brc).slice(-13);
-      acc.push(`${barcode}${intQty}${decimalQty}`);
 
-      return acc;
+      return `${barcode}${intQty}${decimalQty}`;
     }, []);
 
-    let csvContent = "data:text/csv;charset=utf-8," + articles.join("\n");
-
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    const blob = new Blob([articles.join("\n")]);
+    let url = window.URL.createObjectURL(blob);
+    let link = document.createElement("a");
+    link.setAttribute("href", url);
     link.setAttribute("download", "OrpakInventory.txt");
     document.body.appendChild(link); // Required for FF
 
