@@ -121,9 +121,11 @@ const importFiles = (sapData, orpakData, fsData) => {
   const result = importCountedArticles(fsData, orpak);
 
   return Object.keys(result).reduce((acc, sap) => {
+    const barcode = result[sap].masterBarcode ? result[sap].masterBarcode : sap
+
     const item = {
       sapcode: sap,
-      barcode: result[sap].masterBarcode,
+      barcode,
       orpakStock: result[sap].orpakStock,
       inStock: result[sap].inStock,
       supplier: result[sap].supplier,
@@ -131,9 +133,7 @@ const importFiles = (sapData, orpakData, fsData) => {
       name: result[sap].name,
     };
 
-    if (item.inStock || item.orpakStock) {
-      acc.push(item);
-    }
+    acc.push(item);
 
     return acc;
   }, []);
