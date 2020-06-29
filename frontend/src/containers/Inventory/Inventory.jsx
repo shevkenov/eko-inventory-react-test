@@ -50,14 +50,24 @@ class Inventory extends Component {
             <td>{item.name}</td>
             <td>{item.group}</td>
             <td>{item.supplier}</td>
-            <td className={classes.Number}>{item.orpakStock}</td>
+            {/* <td className={classes.Number}>{item.orpakStock}</td> */}
+            <td className={classes.Input}>
+              <div>
+                <input
+                  value={item.orpakStock}
+                  type="number"
+                  min="0"
+                  onChange={(e) => this.props.onChangeOrpakStock(e, item.sapcode)}
+                />
+              </div>
+            </td>
             <td className={classes.Input}>
               <div>
                 <input
                   value={item.inStock}
                   type="number"
                   min="0"
-                  onChange={(e) => this.props.onChange(e, item.sapcode)}
+                  onChange={(e) => this.props.onChangeInStock(e, item.sapcode)}
                 />
               </div>
             </td>
