@@ -211,6 +211,19 @@ class Layout extends Component {
     }
   };
 
+  editOrpakStock = (e, sapcode) => {
+    const item = this.state.articles.find((i) => i.sapcode === sapcode);
+    const index = this.state.articles.findIndex((i) => i.sapcode === sapcode);
+    item.orpakStock = +e.target.value;
+
+    let articles = [...this.state.articles];
+    articles.splice(index, 1, item);
+
+    this.setState({
+      articles,
+    });
+  };
+
   editInStock = (e, sapcode) => {
     const item = this.state.articles.find((i) => i.sapcode === sapcode);
     const index = this.state.articles.findIndex((i) => i.sapcode === sapcode);
@@ -231,6 +244,8 @@ class Layout extends Component {
       loading: false,
       articlesImported: false,
     });
+
+    this.searchHandler('');
   };
 
   orderBy = (property) => {
@@ -450,7 +465,8 @@ class Layout extends Component {
             render={() => (
               <Inventory
                 articles={this.showArticles}
-                onChange={this.editInStock}
+                onChangeInStock={this.editInStock}
+                onChangeOrpakStock={this.editOrpakStock}
                 isArticleImported={this.state.articlesImported}
                 orderBy={this.orderBy}
                 removeItem={this.removeItem}
