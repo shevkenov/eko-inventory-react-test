@@ -204,6 +204,7 @@ class Layout extends Component {
       });
       //};
     } catch (error) {
+      //console.log(error)
       this.setState({
         loading: false,
         error: "Нещо се обърка. Проверете файловете и пробвайте отново!",

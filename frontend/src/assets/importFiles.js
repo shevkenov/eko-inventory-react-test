@@ -9,8 +9,10 @@ const importCountedArticles = (filedata, articleState) => {
     const name = data[2];
 
     if (barcodeRegex.test(curCode)) {
+      
+      //console.log(curCode);
       const sapcode = Object.keys(articles).find((sCode) =>
-        articles[sCode].allBarcodes.includes(curCode)
+          articles[sCode].allBarcodes.includes(curCode)
       );
 
       //if sapcode exists, the relevant barcode will be checked for existnce
@@ -20,7 +22,7 @@ const importCountedArticles = (filedata, articleState) => {
         articles[sapcode].inStock += count;
       } else {
         articles[curCode] = {
-          barcode: [curCode],
+          allBarcodes: [curCode],
           masterBarcode: curCode,
           orpakStock: 0,
           inStock: count,
@@ -53,6 +55,7 @@ const importOrpakArticles = (fileData, articleState) => {
     if (sapcodeRegex.test(curSapcode) && barcodeRegex.test(curBarcode)) {
       //check whether current barcode already exists in articles.
       if (articles[curSapcode]) {
+
         //if barcode does not exist, it will be added as property with 0 instock and 0 orpakStock.
         if (!articles[curSapcode].allBarcodes.includes(curBarcode)) {
           articles[curSapcode].allBarcodes.push(curBarcode);
