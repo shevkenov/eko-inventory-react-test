@@ -246,7 +246,7 @@ class Layout extends Component {
       articlesImported: false,
     });
 
-    this.searchHandler('');
+    this.searchHandler("");
   };
 
   orderBy = (property) => {
@@ -298,13 +298,17 @@ class Layout extends Component {
   };
 
   exportCSV = () => {
-    const CSVheading = "Sapcode;Barcode;Name;Group;Supplier;OrpakStock;In Stock;Differnce\n";
+    const CSVheading =
+      "Sapcode;Barcode;Name;Group;Supplier;OrpakStock;In Stock;Differnce\n";
     const articles = this.state.articles.map((item) => {
       const difference = item.inStock - item.orpakStock;
-      
-      return `${item.sapcode};${"`" + item.barcode};${item.name.replace('"', '')};${
-        item.group
-      };${item.supplier};${item.orpakStock};${item.inStock};${difference}`;
+
+      return `${item.sapcode};${"`" + item.barcode};${item.name.replace(
+        '"',
+        ""
+      )};${item.group};${item.supplier};${item.orpakStock};${
+        item.inStock
+      };${difference}`;
     });
 
     const blob = new Blob([CSVheading + articles.join("\n")]);
@@ -327,7 +331,7 @@ class Layout extends Component {
       let decimalQty = "000";
       if (inx > 0) {
         decimalQty = qty.toString().substring(inx + 1);
-        decimalQty = ("000" + decimalQty).slice(-3);
+        decimalQty = (decimalQty + "000").slice(0, 3);
       }
       const brc = item.barcode;
       const barcode =
