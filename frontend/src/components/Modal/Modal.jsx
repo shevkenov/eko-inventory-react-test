@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 
 import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.css';
@@ -6,8 +6,7 @@ import classes from './Modal.module.css';
 export default function Modal(props) {
 
     return (
-      <Fragment>
-        <Backdrop clicked={props.closeModal} show={props.show} />
+        <Backdrop clicked={props.closeModal} show={props.show}>
         <div
           className={classes.Modal}
           style={{
@@ -25,6 +24,6 @@ export default function Modal(props) {
             </div>
           </div>
         </div>
-      </Fragment>
+        </Backdrop>
     );
 }
